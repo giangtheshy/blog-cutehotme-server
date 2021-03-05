@@ -28,6 +28,16 @@ export const getPost = async (req, res) => {
     res.status(404).json({ error: error.message });
   }
 };
+export const getSinglePost = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const post = await PostsDB.findById(id);
+    if (!post) return res.status(404).json({ error: "id not matching post" });
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 export const deletePost = async (req, res) => {
   try {
     const id = req.params.id;

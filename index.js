@@ -6,6 +6,7 @@ import morgan from "morgan";
 
 import routePost from "./routes/post.router.js";
 import routeUser from "./routes/user.router.js";
+import routeComment from "./routes/comment.router.js";
 import connection from "./database/connection.js";
 import socketIo from "./routes/socket.js";
 
@@ -29,6 +30,7 @@ app.use(morgan("tiny"));
 
 app.use("/", routePost);
 app.use("/", routeUser);
+app.use("/", routeComment);
 
 app.get("/", (req, res) => {
   res.send("API memories!");

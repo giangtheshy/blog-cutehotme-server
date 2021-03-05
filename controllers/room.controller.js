@@ -36,6 +36,7 @@ export const getRoom = async (_room) => {
       },
     },
   ]);
+  console.log(roomCombine);
   const room = roomCombine.find((room) => room.name === _room);
   return room;
 };

@@ -1,6 +1,7 @@
-import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+
+import User from "../models/user.model.js";
 
 export const registerUser = async (req, res) => {
   try {
@@ -33,6 +34,32 @@ export const registerUser = async (req, res) => {
       res.status(200).json(saveUser);
     }
   } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const loginGoogleUser = async (req, res) => {
+  try {
+    const { email, imageUrl, name, googleId } = req.body;
+    const existing = await User.findOne({ id: googleId });
+    let newUser;
+    if (!existing) {
+      newUser = new User({
+        id: googleId,
+        email: `Email Google:${email}`,
+        photoURL: imageUrl,
+        displayName: name,
+        password: googleId,
+      });
+      newUser.save();
+    } else {
+      newUser = await User.findByIdAndUpdate(existing._id, { displayName: name, photoURL: imageUrl }, { new: true });
+    }
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+    res
+      .status(200)
+      .json({ token, user: { displayName: newUser.displayName, photoURL: newUser.photoURL, _id: newUser._id } });
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };

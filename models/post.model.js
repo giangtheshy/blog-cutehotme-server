@@ -8,6 +8,7 @@ const postSchema = mongoose.Schema({
   photoURL: String,
   userID: String,
   likeCount: { type: [String], default: [] },
+  comments: { type: [String], default: [] },
   createdAt: { type: Number, default: new Date().getTime() },
 });
 export default mongoose.model("posts", postSchema);
